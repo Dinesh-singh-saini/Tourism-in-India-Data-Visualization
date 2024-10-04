@@ -35,7 +35,7 @@ between consecutive years.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-repo/tourism-visualization.git
+   git clone https://github.com/Dinesh-singh-saini/Tourism-in-India-Data-Visualization.git
 
 2. **Navigate to the project directory**:
     ```bash
