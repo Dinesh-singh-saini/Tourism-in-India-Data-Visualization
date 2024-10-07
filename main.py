@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 file_path = 'India-Tourism-Statistics-2022-TABLE-2.1.2.csv'
 tourism_data = pd.read_csv(file_path)
 
-
 # Function to plot tourist arrivals
 def plot_tourist_arrivals():
     plt.figure(figsize=(10, 6))
@@ -41,7 +40,6 @@ def plot_growth_percentages():
 def plot_total_comparison():
     totals = [tourism_data['2019'].sum(), tourism_data['2020'].sum(), tourism_data['2021'].sum()]
     years = ['2019', '2020', '2021']
-
     plt.figure(figsize=(8, 5))
     plt.bar(years, totals, color=['blue', 'orange', 'green'])
     plt.title('Total Tourists Comparison (2019-2021)', fontsize=16)
