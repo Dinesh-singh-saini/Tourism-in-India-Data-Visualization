@@ -13,6 +13,7 @@ menu-based interface to explore different visualizations.
 3. **Total Tourists Comparison**: A bar chart that compares the total number of tourists for the three years.
 
 ## Dataset
+The dataset used in this project is "Tourism in India Data Visualization" available from [Data.gov.in](https://www.data.gov.in/resource/month-wise-break-non-resident-indians-nris-arrivals-2019-2021). Could you ensure the dataset is in CSV format and located at the specified file path?
 
 The dataset used contains monthly tourist statistics for 2019, 2020, and 2021, along with percentage growth rates
 between consecutive years.
