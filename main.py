@@ -1,80 +1,83 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load the data
-file_path = 'India-Tourism-Statistics-2022-TABLE-2.1.2.csv'
-tourism_data = pd.read_csv(file_path)
+data = pd.read_csv('tourism_data_indian_states.csv')
+
+data['Date'] = pd.to_datetime(data['Month'] + ' ' + data['Year'].astype(str))
 
 
-# Function to plot tourist arrivals
-def plot_tourist_arrivals():
-    plt.figure(figsize=(10, 6))
-    plt.plot(tourism_data['Months'], tourism_data['2019'], marker='o', label='2019')
-    plt.plot(tourism_data['Months'], tourism_data['2020'], marker='o', label='2020')
-    plt.plot(tourism_data['Months'], tourism_data['2021'], marker='o', label='2021')
-    plt.title('Tourist Arrivals in India (2019-2021)', fontsize=16)
-    plt.xlabel('Months', fontsize=12)
-    plt.ylabel('Number of Tourists', fontsize=12)
-    plt.xticks(rotation=45)
-    plt.grid(True)
-    plt.legend()
+def tourism_visualization_menu():
+    while True:
+        print("\n--- Tourism Data Visualization Menu ---")
+        print("1. Total Tourists by State")
+        print("2. Monthly Tourist Trends for a State")
+        print("3. Top 5 States by Total Tourists")
+        print("4. Growth Percentage by State")
+        print("5. Exit")
+
+        choice = input("Enter your choice (1-5): ")
+
+        if choice == '1':
+            total_tourists_by_state()
+        elif choice == '2':
+            monthly_tourist_trends()
+        elif choice == '3':
+            top_5_states_by_tourists()
+        elif choice == '4':
+            growth_percentage_by_state()
+        elif choice == '5':
+            print("Exiting the menu. Thank you!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+def total_tourists_by_state():
+    plt.figure(figsize=(12, 6))
+    state_totals = data.groupby('State')['Total_Tourists'].sum().sort_values()
+    state_totals.plot(kind='bar', color='skyblue')
+    plt.title("Total Tourists by State")
+    plt.xlabel("Total Tourists")
+    plt.ylabel("State")
     plt.tight_layout()
     plt.show()
 
 
-# Function to plot growth percentages
-def plot_growth_percentages():
-    plt.figure(figsize=(10, 6))
-    plt.plot(tourism_data['Months'], tourism_data['Growth 2020/19 (%)'], marker='o', label='Growth 2020/19 (%)')
-    plt.plot(tourism_data['Months'], tourism_data['Growth 2021/20 (%)'], marker='o', label='Growth 2021/20 (%)')
-    plt.title('Growth Percentages in Tourist Arrivals (2019-2021)', fontsize=16)
-    plt.xlabel('Months', fontsize=12)
-    plt.ylabel('Growth (%)', fontsize=12)
-    plt.xticks(rotation=45)
+def monthly_tourist_trends():
+    state_name = input("Enter the state name to view monthly trends: ")
+    state_data = data[data['State'] == state_name]
+    if state_data.empty:
+        print(f"No data found for the state '{state_name}'.")
+        return
+    plt.figure(figsize=(10, 5))
+    plt.plot(state_data['Date'], state_data['Total_Tourists'], marker='o', linestyle='-', color='green')
+    plt.title(f"Monthly Tourist Trends in {state_name}")
+    plt.xlabel("Date")
+    plt.ylabel("Total Tourists")
     plt.grid(True)
-    plt.legend()
     plt.tight_layout()
     plt.show()
 
 
-# Function to plot total tourists comparison
-def plot_total_comparison():
-    totals = [tourism_data['2019'].sum(), tourism_data['2020'].sum(), tourism_data['2021'].sum()]
-    years = ['2019', '2020', '2021']
-
+def top_5_states_by_tourists():
     plt.figure(figsize=(8, 5))
-    plt.bar(years, totals, color=['blue', 'orange', 'green'])
-    plt.title('Total Tourists Comparison (2019-2021)', fontsize=16)
-    plt.xlabel('Year', fontsize=12)
-    plt.ylabel('Total Tourists', fontsize=12)
+    top_5_states = data.groupby('State')['Total_Tourists'].sum().nlargest(5)
+    top_5_states.plot(kind='bar', color='coral')
+    plt.title("Top 5 States by Total Tourists")
+    plt.xlabel("State")
+    plt.ylabel("Total Tourists")
+    plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
 
+def growth_percentage_by_state():
+    plt.figure(figsize=(12, 6))
+    plt.bar(data['State'], data['Growth_Percentage'])
+    plt.title("Growth Percentage by State")
+    plt.xlabel("State")
+    plt.ylabel("Growth Percentage")
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.show()
 
-# Menu function
-def display_menu():
-    print("Tourism Data Visualization Menu")
-    print("1. Plot Tourist Arrivals (2019-2021)")
-    print("2. Plot Growth Percentages (2020 vs 2019, 2021 vs 2020)")
-    print("3. Compare Total Tourists (2019, 2020, 2021)")
-    print("4. Exit")
-
-    choice = input("Enter your choice (1-4): ")
-    return choice
-
-
-# Main program loop
-while True:
-    user_choice = display_menu()
-
-    if user_choice == '1':
-        plot_tourist_arrivals()
-    elif user_choice == '2':
-        plot_growth_percentages()
-    elif user_choice == '3':
-        plot_total_comparison()
-    elif user_choice == '4':
-        print("Exiting the program.")
-        break
-    else:
-        print("Invalid choice, please try again.")
+tourism_visualization_menu()
